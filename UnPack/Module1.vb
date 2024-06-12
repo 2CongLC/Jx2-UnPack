@@ -53,16 +53,17 @@ Module Program
 
                 Dim buffer As Byte() = br.ReadBytes(fd.size)
                 Dim ext As String = GetExtension(buffer)
+                Dim unsize As Int32 = fd.uncompressSize
                 Dim temp As Byte() = Nothing
 
-                If fd.isCompress = 1 OrElse fd.isCompress = 2 Then
-                    temp = Ucl.NRV2B_Decompress_8(buffer, fd.uncompressSize)
+                If fd.isCompress = 1 OrElse fd.isCompress = 32 Then
+                    temp = Ucl.NRV2B_Decompress_8(buffer, unsize)
                 Else
                     temp = buffer
                 End If
 
-                Using bw As New BinaryWriter(File.Create(p & "//" & fd.uncompressSize & ext))
-                    bw.Write(temp)
+                Using bw As New BinaryWriter(File.Create(p & "//" & fd.id & ext))
+                    '   bw.Write(temp)
                 End Using
             Next
 
